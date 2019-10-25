@@ -14,13 +14,12 @@
 
     </com.asterism.fresk.ui.widget.ScrollViewPager>
 
-    <android.support.design.widget.BottomNavigationView
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
         android:id="@+id/navigation_main"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/background"
-        app:itemIconTint="@color/colors_nav_selector"
-        app:menu="@menu/nav_main" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true">
+    </com.ashokvarma.bottomnavigation.BottomNavigationBar>
 
 </RelativeLayout>
