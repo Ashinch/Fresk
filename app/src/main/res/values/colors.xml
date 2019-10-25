@@ -8,4 +8,7 @@
     <color name="title1">#333333</color>
     <color name="title2">#666666</color>
     <color name="title3">#999999</color>
+
+    <!--activity_login-->
+    <color name="colorBlack">#000000</color>
 </resources>

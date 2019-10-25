@@ -13,6 +13,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.contract.IMainContract;
@@ -43,8 +45,7 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
     ScrollViewPager viewPager;          // 滚动视图容器
 
     @BindView(R.id.navigation_main)
-    BottomNavigationView navigation;    // 底部导航栏
-
+    BottomNavigationBar bottomNavigationBar ;    // 底部导航栏
     /**
      * 底部导航栏 item选中事件监听器
      */
@@ -82,6 +83,9 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
 
     @Override
     protected void initialize() {
+        //设置底部导航栏
+        initBottomNavigationBar();
+
         // 碎片集合
         List<Fragment> fragmentList = new ArrayList<>();
         // 添加笔记页面碎片
@@ -99,13 +103,58 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
         // 为滚动视图容器设置适配器
         viewPager.setAdapter(pagerAdapter);
         // 为滚动视图容器设置默认当前页面为第二页（书桌页面）
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(2);
         // 为滚动视图容器设置屏幕外最大页面数量为3页
         viewPager.setOffscreenPageLimit(3);
+    }
 
-        // 为底部导航栏设置默认选中书桌页面按钮
-        navigation.setSelectedItemId(R.id.nav_desk);
-        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+    /**
+     * 初始化底部导航栏
+     */
+    void initBottomNavigationBar(){
+        /*2.进行必要的设置*/
+        bottomNavigationBar.setBarBackgroundColor(R.color.colorPrimary);
+        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC );
+        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED );//适应大小
+        /*3.添加Tab*/
+        bottomNavigationBar
+                .addItem(new BottomNavigationItem(
+                        R.drawable.nav_write)
+                        .setActiveColor(R.color.colorBlack))
+                .addItem(new BottomNavigationItem(
+                        R.drawable.nav_desk)
+                        .setActiveColor(R.color.colorBlack))
+                .addItem(new BottomNavigationItem(R.drawable.nav_more))
+                .setActiveColor(R.color.colorBlack)
+                .setFirstSelectedPosition(0)  //默认显示面板
+                .initialise();//初始化
+
+        bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position) {
+                switch (position){
+                    case 0:
+                        viewPager.setCurrentItem(0);
+                        break;
+                    case 1:
+                        viewPager.setCurrentItem(1);
+                        break;
+                    case 2:
+                        viewPager.setCurrentItem(2);
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(int position) {
+
+            }
+
+            @Override
+            public void onTabReselected(int position) {
+
+            }
+        });
     }
 
     @Override
