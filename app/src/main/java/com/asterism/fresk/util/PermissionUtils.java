@@ -2,7 +2,7 @@ package com.asterism.fresk.util;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 
 /**
  * 权限工具类

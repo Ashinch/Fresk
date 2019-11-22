@@ -9,7 +9,7 @@
 
     <include layout="@layout/title_add_book_local" />
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/navigation"
@@ -21,7 +21,7 @@
       >
 
 
-    </android.support.design.widget.TabLayout>
+    </com.google.android.material.tabs.TabLayout>
 
 
     <com.asterism.fresk.ui.widget.ScrollViewPager

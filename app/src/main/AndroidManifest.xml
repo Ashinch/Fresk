@@ -32,7 +32,9 @@
         </activity>
 
         <activity android:name=".ui.activity.AddBookLocalActivity" />
-        <activity android:name=".ui.activity.ReadEpubActivity" />
+        <activity
+            android:name=".ui.activity.ReadEpubActivity"
+            android:theme="@style/AppTheme.FullScreen" />
 
     </application>
 

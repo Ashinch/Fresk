@@ -2,18 +2,13 @@ package com.asterism.fresk.ui.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
-<<<<<<< HEAD
 import com.asterism.fresk.ui.activity.ReadEpubActivity;
-
-=======
->>>>>>> master
 import java.io.File;
 
 import butterknife.BindView;
@@ -67,13 +62,7 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
         mPresenter.getBookByIndexSortReadDate(pos, new IBookContract.OnBookBeanListener() {
             @Override
             public void onSuccess(BookBean bookBean) {
-<<<<<<< HEAD
                 mBookBean = bookBean;
-=======
-                bookid = bookBean.getId();
-                bookname = bookBean.getName();
-                selectedImageUri = bookBean.getPicName();
->>>>>>> master
                 imgBookPic.setImageURI(Uri.fromFile(new File(bookBean.getPicName())));
                 bookpicUri = Uri.fromFile(new File(bookBean.getPicName()));
                 tvBookName.setText(bookBean.getName());

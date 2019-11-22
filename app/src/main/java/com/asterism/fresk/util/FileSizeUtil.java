@@ -2,8 +2,9 @@ package com.asterism.fresk.util;
 
 import android.icu.text.DecimalFormat;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.File;
 import java.io.FileInputStream;

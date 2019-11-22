@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="background">#fafafa</color>
+    <color name="title0">#000000</color>
     <color name="title1">#333333</color>
     <color name="title2">#666666</color>
     <color name="title3">#999999</color>

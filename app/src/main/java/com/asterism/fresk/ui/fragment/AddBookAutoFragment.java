@@ -1,10 +1,9 @@
 package com.asterism.fresk.ui.fragment;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+
+import androidx.annotation.RequiresApi;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IAddBookContract;
@@ -58,7 +59,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     @BindView(R.id.btn_import_select)
     Button btnImportSelect;                 // 导入选中 按钮
     private DirectoryListAdapter adapter;   // 目录列表适配器
-    PopupWindow popupWindow =  null;
+    PopupWindow popupWindow = null;
     final List<Map<String, Object>> fileList = new ArrayList<>();      //搜索到的全部list
     final List<Map<String, Object>> showList = new ArrayList<>();      //需要显示的list
     BookTypeDao typeDao = null;
@@ -91,9 +92,9 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     @Override
     protected void initialize() {
 
-        typeDao =  new BookTypeDao(mContext);
+        typeDao = new BookTypeDao(mContext);
         hsFilterShowType = new HashSet<>();
-        for(BookTypeBean s : typeDao.selectAll()){
+        for (BookTypeBean s : typeDao.selectAll()) {
             hsFilterShowType.add(s.getType());
         }
         //初始化容器
@@ -104,15 +105,16 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     //endregion
 
     //region 正在加载窗口有关方法
+
     /**
      * 显示正在加载窗口
      */
-    private void ShowNowLoadWindow(){
+    private void ShowNowLoadWindow() {
 
         View contentView = LayoutInflater.from(mContext).inflate(R.layout.poput_now_search, null);
         Button btCancel = contentView.findViewById(R.id.btCancel);
 
-        if(popupWindow == null){
+        if (popupWindow == null) {
             popupWindow = new PopupWindow(contentView,
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
@@ -145,17 +147,18 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     /**
      * 关闭正在加载窗口
      */
-    private void dismissNowLoadWindow(){
+    private void dismissNowLoadWindow() {
         popupWindow.dismiss();
     }
 
     //endregion
 
     //region 容器有关方法
+
     /**
      * 初始化容器
      */
-    private void initListView(){
+    private void initListView() {
 
         mPresenter.scanBooks(hsFilterShowType, new Observer<String>() {
             @Override
@@ -169,18 +172,20 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
                 File file = new File(path);
 
                 //筛选  判断添加类型是否包含在里面
-                if(!hsFilterShowType.contains(FileUtils.getFileSuffixName(path))){ return; }
+                if (!hsFilterShowType.contains(FileUtils.getFileSuffixName(path))) {
+                    return;
+                }
                 //筛选  筛选大小
                 String size = FileSizeUtil.getAutoFileOrFilesSize(file.getPath());
 
-                if(!etMinFileSize.getText().toString().equals("") && !etMinFileSize.getText().toString().equals("0")){
-                    if(!FileSizeUtil.IsGreatInt(size, Integer.parseInt(etMinFileSize.getText().toString()))){
+                if (!etMinFileSize.getText().toString().equals("") && !etMinFileSize.getText().toString().equals("0")) {
+                    if (!FileSizeUtil.IsGreatInt(size, Integer.parseInt(etMinFileSize.getText().toString()))) {
                         return;
                     }
                 }
 
-                if(!etMaxFileSize.getText().toString().equals("") && !etMaxFileSize.getText().toString().equals("0")){
-                    if(FileSizeUtil.IsGreatInt(size, Integer.parseInt(etMaxFileSize.getText().toString()))){
+                if (!etMaxFileSize.getText().toString().equals("") && !etMaxFileSize.getText().toString().equals("0")) {
+                    if (FileSizeUtil.IsGreatInt(size, Integer.parseInt(etMaxFileSize.getText().toString()))) {
                         return;
                     }
                 }
@@ -196,7 +201,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
 
                 BookDao dao = new BookDao(getContext());
                 String Type = "file";
-                if( dao.queryIsExistByPath(path)){
+                if (dao.queryIsExistByPath(path)) {
                     Type = "already_file";
                 }
                 // 记录文件类型
@@ -235,7 +240,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-           if(fileList.get(position).get("type").equals("file")){
+            if (fileList.get(position).get("type").equals("file")) {
 
                 if (((DirectoryListAdapter.ViewHolder) view.getTag()).cbOption.isChecked()) {
                     adapter.setBook(position);
@@ -245,16 +250,15 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
                     updateProgressPartly(position, true);
                 }
 
-                List<String > li = new ArrayList<>(adapter.book.keySet());
+                List<String> li = new ArrayList<>(adapter.book.keySet());
 
                 // 更新UI数据
                 btnImportSelect.setText(getResources().getString(R.string.importSelect) + "(" + adapter.book.size() + ")");
 
                 //当点击的为already_file()类型时
-            }else if(fileList.get(position).get("type").equals("already_file")){
+            } else if (fileList.get(position).get("type").equals("already_file")) {
                 //无需操作
-            }
-            else {
+            } else {
                 showSuccessToast("错误，未知的类型+ ");
             }
         }
@@ -297,10 +301,11 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     //endregion
 
     //region 筛选窗口有关方法
+
     /**
      * 初始化筛选窗口
      */
-    private void initFilterWindow(){
+    private void initFilterWindow() {
         View contentView = LayoutInflater.from(getContext()).inflate(R.layout.poput_filter, null);
 
         //得到确定按钮
@@ -314,9 +319,11 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
         //得到最大文件大小输入框
         etMaxFileSize = contentView.findViewById(R.id.etMaxFileSize);
         //得到书籍类型dao
-        if(null == typeDao) { typeDao = new BookTypeDao(getContext());}
+        if (null == typeDao) {
+            typeDao = new BookTypeDao(getContext());
+        }
         //添加复习框到弹出按钮
-        for(BookTypeBean bean : typeDao.selectAll()){
+        for (BookTypeBean bean : typeDao.selectAll()) {
             CheckBox temCheckBox = new CheckBox(getContext());
             temCheckBox.setText(bean.getType());
             temCheckBox.setChecked(true);
@@ -359,21 +366,23 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     /**
      * 筛选确认
      */
-    private void FilterConfirm(){
+    private void FilterConfirm() {
         //临时CheckBox
         CheckBox temCheckBox = null;
         //清空
         hsFilterShowType.clear();
         //查看所有的复习框
-        for(int i = 0; i < checkLine.getChildCount(); i++){
-            temCheckBox = (CheckBox)checkLine.getChildAt(i);
+        for (int i = 0; i < checkLine.getChildCount(); i++) {
+            temCheckBox = (CheckBox) checkLine.getChildAt(i);
             //假若勾选了，则添加到Set中
-            if(temCheckBox.isChecked()){
+            if (temCheckBox.isChecked()) {
                 hsFilterShowType.add(temCheckBox.getText().toString());
             }
         }
         //关闭窗口
-        if(null != popupFilterWindow){ popupFilterWindow.dismiss();}
+        if (null != popupFilterWindow) {
+            popupFilterWindow.dismiss();
+        }
 
         //清空list
         fileList.clear();
@@ -384,7 +393,7 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
     /**
      * 显示筛选窗口
      */
-    private void ShowFilterWindow(){
+    private void ShowFilterWindow() {
         backgroundAlpha((float) 0.5);
         //显示PopupWindow
         View rootview = LayoutInflater.from(getContext()).inflate(R.layout.activity_add_book_local, null);
@@ -397,28 +406,35 @@ public class AddBookAutoFragment extends BaseFragment<IAddBookContract.Presenter
 
     //region 合约需实现的方法
     @Override
-    public Context GetContext() { return super.getContext(); }
+    public Context GetContext() {
+        return super.getContext();
+    }
 
     @Override
-    public void showAdding() { }
+    public void showAdding() {
+    }
 
     @Override
-    public void hideAdding() { }
+    public void hideAdding() {
+    }
 
     @Override
-    public void showScanning() { }
+    public void showScanning() {
+    }
 
     @Override
-    public void hideScanning() { }
+    public void hideScanning() {
+    }
     //endregion
 
     //region 其他公共方法
+
     /**
      * 设置添加屏幕的背景透明度
+     *
      * @param bgAlpha
      */
-    public void backgroundAlpha(float bgAlpha)
-    {
+    public void backgroundAlpha(float bgAlpha) {
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
         lp.alpha = bgAlpha; //0.0-1.0
         getActivity().getWindow().setAttributes(lp);

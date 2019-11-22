@@ -1,18 +1,16 @@
 package com.asterism.fresk.ui.activity;
 
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.LayoutInflater;
 
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IReadContract;
 import com.asterism.fresk.presenter.ReadPresenter;
-import com.asterism.fresk.ui.adapter.ChapterListAdapter;
+import com.yarolegovich.discretescrollview.DSVOrientation;
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import nl.siegmann.epublib.domain.Book;
 
 /**
@@ -25,30 +23,36 @@ import nl.siegmann.epublib.domain.Book;
 public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
         implements IReadContract.View {
 
-    @BindView(R.id.iv_book_pic)
-    ImageView ivBookPic;
+//    @BindView(R.id.iv_book_pic)
+//    ImageView ivBookPic;
+//
+//    @BindView(R.id.tv_book_name)
+//    TextView tvBookName;
+//
+//    @BindView(R.id.tv_book_state)
+//    TextView tvBookState;
+//
+//    @BindView(R.id.tv_chapter_num)
+//    TextView tvChapterNum;
+//
+//    @BindView(R.id.tv_order)
+//    TextView tvOrder;
+//
+//    @BindView(R.id.lv_chapter)
+//    ListView lvChapter;
 
-    @BindView(R.id.tv_book_name)
-    TextView tvBookName;
+//    @BindView(R.id.align_tv)
+//    AlignTextView alignTV;
 
-    @BindView(R.id.tv_book_state)
-    TextView tvBookState;
-
-    @BindView(R.id.tv_chapter_num)
-    TextView tvChapterNum;
-
-    @BindView(R.id.tv_order)
-    TextView tvOrder;
-
-    @BindView(R.id.lv_chapter)
-    ListView lvChapter;
+//    @BindView(R.id.scrollView)
+//    DiscreteScrollView scrollView;
 
     private Book mBook;
     private List<String> mTocList;
 
     @Override
     protected int setLayoutId() {
-        return R.layout.activity_read_epub;
+        return R.layout.activity_read;
     }
 
     @Override
@@ -69,8 +73,8 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
             @Override
             public void onSuccess(List<String> tocString) {
                 mTocList = tocString;
-                tvChapterNum.setText("共" + mTocList.size() + "章");
-                lvChapter.setAdapter(new ChapterListAdapter(ReadEpubActivity.this, mTocList));
+//                tvChapterNum.setText("共" + mTocList.size() + "章");
+//                lvChapter.setAdapter(new ChapterListAdapter(ReadEpubActivity.this, mTocList));
             }
 
             @Override
@@ -78,6 +82,7 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
                 showErrorToast("获取目录失败: " + message);
             }
         });
+
     }
 
     @Override
@@ -87,11 +92,6 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
 
     @Override
     public void hideLoading() {
-
-    }
-
-    @OnClick(R.id.tv_order)
-    public void onClick() {
 
     }
 }

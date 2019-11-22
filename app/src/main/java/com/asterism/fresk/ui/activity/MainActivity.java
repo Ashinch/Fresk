@@ -1,30 +1,22 @@
 package com.asterism.fresk.ui.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.asterism.fresk.R;
-import com.asterism.fresk.contract.IAddBookContract;
 import com.asterism.fresk.contract.IMainContract;
-import com.asterism.fresk.presenter.AddBookPresenter;
 import com.asterism.fresk.presenter.MainPresenter;
 import com.asterism.fresk.ui.adapter.PagerAdapter;
 import com.asterism.fresk.ui.fragment.BookFragment;
 import com.asterism.fresk.ui.fragment.MoreFragment;
 import com.asterism.fresk.ui.fragment.NoteFragment;
 import com.asterism.fresk.ui.widget.ScrollViewPager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +37,7 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
     ScrollViewPager viewPager;          // 滚动视图容器
 
     @BindView(R.id.navigation_main)
-    BottomNavigationBar bottomNavigationBar ;    // 底部导航栏
+    BottomNavigationBar bottomNavigationBar;    // 底部导航栏
     /**
      * 底部导航栏 item选中事件监听器
      */
@@ -103,7 +95,7 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
         // 为滚动视图容器设置适配器
         viewPager.setAdapter(pagerAdapter);
         // 为滚动视图容器设置默认当前页面为第二页（书桌页面）
-        viewPager.setCurrentItem(2);
+        viewPager.setCurrentItem(1);
         // 为滚动视图容器设置屏幕外最大页面数量为3页
         viewPager.setOffscreenPageLimit(3);
     }
@@ -111,28 +103,28 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
     /**
      * 初始化底部导航栏
      */
-    void initBottomNavigationBar(){
+    void initBottomNavigationBar() {
         /*2.进行必要的设置*/
         bottomNavigationBar.setBarBackgroundColor(R.color.colorPrimary);
-        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC );
-        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED );//适应大小
+        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);//适应大小
         /*3.添加Tab*/
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(
                         R.drawable.nav_write)
-                        .setActiveColor(R.color.colorBlack))
+                        .setActiveColor(R.color.title1))
                 .addItem(new BottomNavigationItem(
                         R.drawable.nav_desk)
-                        .setActiveColor(R.color.colorBlack))
+                        .setActiveColor(R.color.title1))
                 .addItem(new BottomNavigationItem(R.drawable.nav_more))
-                .setActiveColor(R.color.colorBlack)
+                .setActiveColor(R.color.title1)
                 .setFirstSelectedPosition(0)  //默认显示面板
                 .initialise();//初始化
 
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position) {
-                switch (position){
+                switch (position) {
                     case 0:
                         viewPager.setCurrentItem(0);
                         break;
@@ -157,26 +149,24 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        SharedPreferences sp=getSharedPreferences("data",MODE_PRIVATE);
-        SharedPreferences.Editor editor=sp.edit();
-        //获取图片路径
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
-            Cursor cursor = getContentResolver().query(selectedImage, null, null, null,null);
-            if (cursor != null && cursor.moveToFirst()) {
-                String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                editor.putString("selectedImage",path);
-                editor.commit();
-            }
-        }
-        else
-        {
-            editor.putString("selectedImage","没选择");
-            editor.commit();
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sp.edit();
+//        //获取图片路径
+//        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+//            Uri selectedImage = data.getData();
+//            Cursor cursor = getContentResolver().query(selectedImage, null, null, null, null);
+//            if (cursor != null && cursor.moveToFirst()) {
+//                String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+//                editor.putString("selectedImage", path);
+//                editor.commit();
+//            }
+//        } else {
+//            editor.putString("selectedImage", "没选择");
+//            editor.commit();
+//        }
+//    }
 
 }
