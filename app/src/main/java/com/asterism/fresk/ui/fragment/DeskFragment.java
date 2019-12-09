@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.asterism.fresk.R;
 import com.asterism.fresk.contract.IBookContract;
+import com.asterism.fresk.dao.BookDao;
 import com.asterism.fresk.dao.bean.BookBean;
 import com.asterism.fresk.presenter.BookPresenter;
 import com.asterism.fresk.ui.activity.ReadEpubActivity;
+
 import java.io.File;
 
 import butterknife.BindView;
@@ -68,7 +71,30 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
                 tvBookName.setText(bookBean.getName());
                 tvLastChapter.setText(bookBean.getLastChapter());
                 tvReadProgress.setText(bookBean.getReadProgress() + "%");
-                mPresenter.initData(imgBookPic,tvBookName,onNormalListener,bookid,bookname,selectedImageUri,bookpicUri);
+                mPresenter.initData(imgBookPic, tvBookName, onNormalListener, bookid, bookname, selectedImageUri, bookpicUri);
+                mPresenter.LongPressEditor();
+            }
+
+            @Override
+            public void onError(String message) {
+                showErrorToast("获取书桌书籍错误: " + message);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.getBookByIndexSortReadDate(pos, new IBookContract.OnBookBeanListener() {
+            @Override
+            public void onSuccess(BookBean bookBean) {
+                mBookBean = bookBean;
+                imgBookPic.setImageURI(Uri.fromFile(new File(bookBean.getPicName())));
+                bookpicUri = Uri.fromFile(new File(bookBean.getPicName()));
+                tvBookName.setText(bookBean.getName());
+                tvLastChapter.setText(bookBean.getLastChapter());
+                tvReadProgress.setText(bookBean.getReadProgress() + "%");
+                mPresenter.initData(imgBookPic, tvBookName, onNormalListener, bookid, bookname, selectedImageUri, bookpicUri);
                 mPresenter.LongPressEditor();
             }
 
@@ -102,7 +128,15 @@ public class DeskFragment extends BaseFragment<IBookContract.Presenter>
     @OnClick(R.id.img_book_Pic)
     public void onClick() {
         if (mBookBean != null) {
-            startActivity(new Intent(mContext, ReadEpubActivity.class).putExtra("path",mBookBean.getFilePath()));
+            Intent intent = new Intent(mContext, ReadEpubActivity.class);
+            intent.putExtra("path", mBookBean.getFilePath());
+            intent.putExtra("bookName", mBookBean.getName());
+            intent.putExtra("bookPic", mBookBean.getPicName());
+            intent.putExtra("bookState", "已读 " + mBookBean.getReadProgress() + "% ，"
+                    + mBookBean.getReadTiming() + "分钟");
+            BookDao bookDao=new BookDao(mContext);
+            bookDao.updateBookByBookName(mBookBean.getName());
+            startActivity(intent);
         }
     }
 

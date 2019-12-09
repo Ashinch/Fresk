@@ -553,7 +553,7 @@ public class BookPresenter extends BasePresenter<IBookContract.View>
                 try {
                     while (true) {
                         SharedPreferences sp = getContext().getSharedPreferences
-                                ("data", getContext().MODE_PRIVATE);
+                                ("model", getContext().MODE_PRIVATE);
                         SharedPreferences.Editor editor = sp.edit();
                         String selectedImage = sp.getString("selectedImage"
                                 , null);

@@ -1,8 +1,11 @@
 package com.asterism.fresk.presenter;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -17,8 +20,10 @@ import com.asterism.fresk.util.FileSizeUtil;
 import com.asterism.fresk.util.FileUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +37,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.domain.MediaType;
+import nl.siegmann.epublib.epub.EpubReader;
+import nl.siegmann.epublib.service.MediatypeService;
 
 /**
  * 添加书籍模块Presenter类，继承base基类且泛型为当前模块View接口类型，并实现当前模块Presenter接口
@@ -76,8 +85,38 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                         .getAbsolutePath() + File.separator + "pdf.png";
                 break;
             case "epub":
-                picPath = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                        .getAbsolutePath() + File.separator + "epub.png";
+                Book book = null;
+                EpubReader reader = new EpubReader();
+                MediaType[] lazyTypes = {
+                        MediatypeService.CSS,
+                        MediatypeService.GIF,
+                        MediatypeService.JPG,
+                        MediatypeService.PNG,
+                        MediatypeService.MP3,
+                        MediatypeService.MP4
+                };
+                try {
+                    book = reader.readEpubLazy(path, "utf-8", Arrays.asList(lazyTypes));
+                    Bitmap coverImage = BitmapFactory.decodeStream(book.getCoverImage().getInputStream());
+                    if (coverImage != null) {
+                        File file = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                                .getAbsolutePath() + File.separator + book.getMetadata().getTitles().get(0) + ".png");
+                        FileOutputStream out = new FileOutputStream(file);
+                        coverImage.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        out.flush();
+                        out.close();
+                        picPath = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                                .getAbsolutePath() + File.separator + book.getMetadata().getTitles().get(0) + ".png";
+                        Log.i("pic", picPath);
+                    } else {
+                        picPath = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                                .getAbsolutePath() + File.separator + "epub.png";
+                        mView.showWarningToast("获取书籍封面失败！");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case "mobi":
                 picPath = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
@@ -88,7 +127,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
         bookBean.setPicName(picPath);
         return bookBean;
     }
-    
+
     /**
      * 文件扫描递归
      *
@@ -239,7 +278,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                 for (File file : currentFiles) {
                     String type;
                     //若为隐藏文件则退出
-                    if(file.isHidden()){
+                    if (file.isHidden()) {
                         continue;
                     }
                     itemMap = new HashMap<>();
@@ -254,22 +293,21 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                         try {
                             BookDao dao = new BookDao(mView.GetContext());
                             // 判断数据库中是否已经拥有此书籍
-                            if( dao.queryIsExistByPath( currentDir.getCanonicalPath() + File.separator + file.getName())){
+                            if (dao.queryIsExistByPath(currentDir.getCanonicalPath() + File.separator + file.getName())) {
                                 // 以用于type设置为already_file
                                 type = "already_file";
                             }
-                        }catch (IOException e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else {
+                    } else {
                         // 除了文件夹和书籍类型文件，其他一律忽略
                         continue;
                     }
 
                     // 记录文件路径
                     try {
-                       itemMap.put("path", currentDir.getCanonicalPath() + File.separator + file.getName());
+                        itemMap.put("path", currentDir.getCanonicalPath() + File.separator + file.getName());
                     } catch (IOException e) {
                         e.printStackTrace();
                         mView.showErrorToast(e.getMessage());
@@ -279,7 +317,7 @@ public class AddBookPresenter extends BasePresenter<IAddBookContract.View>
                     // 记录文件类型
                     itemMap.put("type", type);
                     //记录文件大小
-                    itemMap.put("size",  FileSizeUtil.getAutoFileOrFilesSize(file.getPath()));
+                    itemMap.put("size", FileSizeUtil.getAutoFileOrFilesSize(file.getPath()));
 
                     //记录文件时间
                     itemMap.put("time", FileUtils.GetShowFileTime(file));

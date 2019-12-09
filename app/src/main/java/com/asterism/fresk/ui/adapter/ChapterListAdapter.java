@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.asterism.fresk.R;
+import com.asterism.fresk.dao.bean.TocBean;
 
 import java.io.File;
 import java.util.List;
@@ -25,10 +26,10 @@ import nl.siegmann.epublib.domain.TOCReference;
 public class ChapterListAdapter extends BaseAdapter {
 
     private Context context;                   // 上下文对象
-    private List<String> tocList;        // 书籍信息集合
+    private List<TocBean> tocList;        // 书籍信息集合
 
 
-    public ChapterListAdapter(Context context, List<String> tocList) {
+    public ChapterListAdapter(Context context, List<TocBean> tocList) {
         this.context = context;
         this.tocList = tocList;
     }
@@ -87,7 +88,7 @@ public class ChapterListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tvChapterName.setText(tocList.get(position));
+        holder.tvChapterName.setText(tocList.get(position).getTitle());
         return convertView;
     }
 

@@ -1,5 +1,7 @@
 package com.asterism.fresk.contract;
 
+import com.asterism.fresk.dao.bean.TocBean;
+
 import java.util.List;
 
 import nl.siegmann.epublib.domain.Book;
@@ -35,6 +37,9 @@ public interface IReadContract {
          * @param listener 监听器
          */
         void getToc(Book book, OnGetTocListener listener);
+
+
+        void getContent(Book book,String id, OnGetContentListener listener);
     }
 
     interface OnGetEpubBookListener {
@@ -57,7 +62,21 @@ public interface IReadContract {
          *
          * @param tocList 回调获取到的目录字符串集合
          */
-        void onSuccess(List<String> tocList);
+        void onSuccess(List<TocBean> tocList);
+
+        /**
+         * 获取书籍目录错误事件
+         */
+        void onError(String message);
+    }
+
+    interface OnGetContentListener {
+        /**
+         * 获取内容成功事件
+         *
+         * @param content 回调获取到的目录字符串集合
+         */
+        void onSuccess(StringBuffer content);
 
         /**
          * 获取书籍目录错误事件

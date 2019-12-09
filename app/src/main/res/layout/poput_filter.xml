@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-    android:gravity="center"
-    android:orientation="vertical"
     android:background="@drawable/now_search_hint_background"
-    >
+    android:gravity="center"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -21,66 +19,65 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="10dp"
             android:paddingLeft="5dp"
-            android:paddingRight="8dp"
-            >
-        </LinearLayout>
+            android:paddingTop="10dp"
+            android:paddingRight="8dp"></LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
 
         >
+
         <EditText
             android:id="@+id/etMinFileSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:width="70dp"
             android:hint="min(M)"
             android:inputType="number"
-            android:width="70dp"
-            android:textAlignment="center"
-            />
-       <TextView
+            android:textAlignment="center" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="——"/>
+            android:text="——" />
 
         <EditText
             android:id="@+id/etMaxFileSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:width="70dp"
             android:hint="max(M)"
             android:inputType="number"
-            android:width="70dp"
-            android:textAlignment="center"
-            />
+            android:textAlignment="center" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="200dp"
-        >
+        android:minWidth="200dp">
+
         <Button
             android:id="@+id/btConfirm"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="@string/confirm"
-            android:gravity="center"
             android:background="@drawable/cancel_button_background"
-            />
+            android:gravity="center"
+            android:text="@string/confirm" />
+
         <Button
             android:id="@+id/btAnew"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="@string/anew"
-            android:gravity="center"
             android:background="@drawable/cancel_button_background"
-            />
+            android:gravity="center"
+            android:text="@string/anew" />
     </LinearLayout>
 </LinearLayout>

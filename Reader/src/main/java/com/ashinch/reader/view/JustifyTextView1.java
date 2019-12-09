@@ -14,18 +14,23 @@ import androidx.appcompat.widget.AppCompatTextView;
 /**
  * Created by ccheng on 3/18/14.
  */
-public class JustifyTextView extends AppCompatTextView {
+public class JustifyTextView1 extends AppCompatTextView {
     private int mLineY;
     private int mViewWidth;
     private Rect mBounds = new Rect();
     public int charNum = 0;
 
-    public JustifyTextView(Context context, AttributeSet attrs) {
+    public JustifyTextView1(Context context) {
+        super(context);
+    }
+
+    public JustifyTextView1(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     /**
      * 重写 测量事件
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
@@ -39,6 +44,7 @@ public class JustifyTextView extends AppCompatTextView {
 
     /**
      * 重写 布局事件
+     *
      * @param changed
      * @param left
      * @param top
@@ -53,6 +59,7 @@ public class JustifyTextView extends AppCompatTextView {
 
     /**
      * 重写 绘制事件
+     *
      * @param canvas
      */
     @Override
@@ -96,8 +103,8 @@ public class JustifyTextView extends AppCompatTextView {
 //            width = width - paddingLeft - paddingRight;
 
             // 是否需要对齐 且 不为最后一行
-            if (isNeedScale(line) && i < batch -1) { //layout.getLineCount()
-                drawScaledText(canvas, lineStart, line, width-12);
+            if (isNeedScale(line) && i < batch - 1) { //layout.getLineCount()
+                drawScaledText(canvas, lineStart, line, width - 12);
             } else {
                 canvas.drawText(line, 0, mLineY, paint);
             }
@@ -110,6 +117,7 @@ public class JustifyTextView extends AppCompatTextView {
 
     /**
      * 绘制缩放文本
+     *
      * @param canvas
      * @param lineStart
      * @param line
@@ -137,8 +145,10 @@ public class JustifyTextView extends AppCompatTextView {
 
     /**
      * 判断是否为段落第一行
+     *
      * @param lineStart
      * @param line
+     *
      * @return
      */
     private boolean isFirstLineOfParagraph(int lineStart, String line) {
@@ -147,7 +157,9 @@ public class JustifyTextView extends AppCompatTextView {
 
     /**
      * 判断是否需要缩放
+     *
      * @param line
+     *
      * @return
      */
     private boolean isNeedScale(String line) {
@@ -172,6 +184,7 @@ public class JustifyTextView extends AppCompatTextView {
 
     /**
      * 去除当前页无法显示的字
+     *
      * @return 去掉的字数
      */
     public int resize() {

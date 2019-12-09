@@ -19,4 +19,15 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="anim_popup_bottom_bar">
+        <item name="android:windowEnterAnimation">@anim/popup_bottom_bar_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_bottom_bar_out</item>
+    </style>
+
+    <style name="anim_popup_left_bar">
+        <item name="android:windowEnterAnimation">@anim/popup_left_bar_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_left_bar_out</item>
+    </style>
+
+
 </resources>

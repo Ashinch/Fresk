@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
                         .setActiveColor(R.color.title1))
                 .addItem(new BottomNavigationItem(R.drawable.nav_more))
                 .setActiveColor(R.color.title1)
-                .setFirstSelectedPosition(0)  //默认显示面板
+                .setFirstSelectedPosition(1)  //默认显示面板
                 .initialise();//初始化
 
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
@@ -130,6 +130,7 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
                         break;
                     case 1:
                         viewPager.setCurrentItem(1);
+
                         break;
                     case 2:
                         viewPager.setCurrentItem(2);
@@ -150,13 +151,13 @@ public class MainActivity extends BaseActivity<IMainContract.Presenter>
     }
 
 //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        SharedPreferences sp = getSharedPreferences("data", MODE_PRIVATE);
+//    protected void onActivityResult(int requestCode, int resultCode, Intent model) {
+//        super.onActivityResult(requestCode, resultCode, model);
+//        SharedPreferences sp = getSharedPreferences("model", MODE_PRIVATE);
 //        SharedPreferences.Editor editor = sp.edit();
 //        //获取图片路径
-//        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
-//            Uri selectedImage = data.getData();
+//        if (requestCode == 1 && resultCode == Activity.RESULT_OK && model != null) {
+//            Uri selectedImage = model.getData();
 //            Cursor cursor = getContentResolver().query(selectedImage, null, null, null, null);
 //            if (cursor != null && cursor.moveToFirst()) {
 //                String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
