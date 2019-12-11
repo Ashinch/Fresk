@@ -35,7 +35,7 @@ public class AppApplication extends Application {
         // 初始化缺省书籍封面
         initBookPictures();
         // 初始化书籍
-        initBook();
+//        initBook();
     }
 
     /**

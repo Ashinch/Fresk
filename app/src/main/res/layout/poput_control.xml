@@ -12,29 +12,37 @@
 
         <ImageButton
             android:id="@+id/btn_toc"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/toc"
+            android:background="@color/colorPrimary"
             android:scaleType="fitXY"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="40dp"/>
 
         <ImageButton
-            android:id="@+id/btn_font"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/btn_text_size_plus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitXY"
-            android:layout_marginEnd="20dp"/>
+            android:src="@drawable/textsizeplus"
+            android:background="@color/colorPrimary"
+            android:layout_marginEnd="40dp"/>
 
         <ImageButton
-            android:id="@+id/btn_theme"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/btn_text_size_sub"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitXY"
-            android:layout_marginEnd="20dp"/>
+            android:src="@drawable/textsizesub"
+            android:background="@color/colorPrimary"
+            android:layout_marginEnd="40dp"/>
 
         <ImageButton
-            android:id="@+id/btn_mode"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/btn_listen"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/listen"
+            android:background="@color/colorPrimary"
             android:scaleType="fitXY"/>
 
     </LinearLayout>

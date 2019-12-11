@@ -3,9 +3,11 @@ package com.asterism.fresk.ui.activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.speech.tts.TextToSpeech;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import com.asterism.fresk.ui.adapter.ChapterListAdapter;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import nl.siegmann.epublib.domain.Book;
@@ -55,6 +58,8 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
     private PopupWindow popupToc;
     private ChapterListAdapter tocAdapter;
 
+    private TextToSpeech tts;
+
     @Override
     protected int setLayoutId() {
         return R.layout.activity_read;
@@ -67,6 +72,17 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
 
     @Override
     protected void initialize() {
+        tts = new TextToSpeech(ReadEpubActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = tts.setLanguage(Locale.CHINA);
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        showWarningToast("暂不支持朗读！");
+                    }
+                }
+            }
+        });
 //        readerView.afterMeasured(readerView,new StringBuffer(getResources().getString(R.string.test)));
 //        readerView.setMContent(new StringBuffer(getResources().getString(R.string.test)));
         readerTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -106,6 +122,33 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
             public void onClick(View v) {
                 popupControl.dismiss();
                 popupToc.showAtLocation(getWindow().getDecorView(), Gravity.LEFT, 0, 0);
+            }
+        });
+
+        layoutControl.findViewById(R.id.btn_text_size_plus).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readerTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, readerTextView.getTextSize() + 2);
+            }
+        });
+
+        layoutControl.findViewById(R.id.btn_text_size_sub).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readerTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, readerTextView.getTextSize() - 2);
+            }
+        });
+
+        layoutControl.findViewById(R.id.btn_listen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tts != null) {
+                    if (tts.isSpeaking()) {
+                        tts.speak("",TextToSpeech.QUEUE_FLUSH,null);
+                    } else {
+                        tts.speak(readerTextView.getText().toString(),TextToSpeech.QUEUE_FLUSH,null);
+                    }
+                }
             }
         });
 
@@ -203,4 +246,12 @@ public class ReadEpubActivity extends BaseActivity<IReadContract.Presenter>
 //                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //        startActivity(intent);
 //    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (tts != null) {
+            tts.shutdown();
+        }
+    }
 }
